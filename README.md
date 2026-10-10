@@ -33,7 +33,10 @@ autorisées.
 Les images de cultures sont conservées dans `assets/crops/`. Le fichier
 `crop-photo-credits.json` associe chaque culture à sa photo et aux informations
 d’auteur et de licence Creative Commons. Un lien de crédit est affiché sous la
-photo. Ne pas dissocier ces attributions des images lors de la redistribution.
+photo. Les cartes, les suggestions d’accueil et les fiches de culture utilisent
+cette même image locale ; si une photo est indisponible, l’application affiche
+le nom de la culture au lieu d’une image de remplacement potentiellement erronée.
+Ne pas dissocier ces attributions des images lors de la redistribution.
 
 ## Transformation et outils pour agronomes
 
@@ -42,27 +45,58 @@ la mangue, le mil, le fonio, l’arachide, le moringa et la tomate. Les procéd�
 de conservation, conditions d’hygiène et durées ne sont pas certifiés : ils
 doivent être validés pour le produit, l’équipement et le marché visés.
 
-Les formules Premium affichent des aperçus de carnets de lots, d’outils de coût
-et de dossiers d’atelier. Le prototype ne livre pas de dossier technique
-confidentiel dans le navigateur. Avant de vendre ces ressources, connecter un
-serveur qui contrôle l’abonnement et renvoie le contenu autorisé.
+Les forfaits Premium prévus sont 1 000 FCFA (Essentiel), 4 000 FCFA (Pro) et
+8 000 FCFA (Expert). Chaque palier inclut les précédents et ajoute des fiches
+cultures avec problèmes fréquents et pistes de solution, des analyses de sols,
+des guides de transformation et des dossiers de veille pédagogique. Des
+illustrations SVG originales complètent les cultures sans photo autorisée
+disponible ; les photographies sous licence gardent leurs crédits. L’assistant
+actuel fournit des réponses générales guidées, sans modèle d’IA distant. Les
+conseils de diagnostic et les procédés de transformation restent à confirmer
+auprès de spécialistes locaux.
 
-L’authentification réelle par e-mail utilise Supabase. Après la création du
-projet, renseigner son URL et sa clé publishable dans `supabase-config.js`, puis
-activer la confirmation d’e-mail dans les réglages Authentication de Supabase.
+La recherche de cultures ouvre l’onglet **Cultures** avec les résultats filtrés.
+La cloche affiche des notifications indicatives de démonstration, pas des
+alertes push.
+
+L’onglet **Météo** charge les conditions et prévisions horaires d’Open-Meteo
+pour la capitale du pays choisi ; il nécessite une connexion Internet. Les
+outils gratuits de campagne calculent une recette estimative à partir des
+données saisies. La marge et le seuil de rentabilité ne sont visibles que dans
+l’aperçu Premium simulé. Dans **Assistant IA**, les réponses automatiques sont
+des conseils généraux guidés, sans modèle d’IA distant ni diagnostic professionnel.
+Les fiches de culture donnent des repères à vérifier localement.
+
+L’authentification réelle utilise Supabase. Après la création du projet,
+renseigner son URL et sa clé publishable dans `supabase-config.js`, puis activer
+la confirmation d’e-mail dans les réglages Authentication de Supabase. Le
+compte propose ensuite une validation du téléphone par code à usage unique
+(OTP), via `auth.updateUser({ phone })` et `auth.verifyOtp`. Pour que les SMS
+soient réellement envoyés, activer la connexion téléphonique et configurer un
+fournisseur SMS dans Supabase Auth. Les numéros doivent être saisis au format
+international E.164 (par exemple `+221771234567`). Le code ne doit jamais être
+demandé à un autre utilisateur ni transmis au service client.
+
 La clé publishable est prévue pour le navigateur ; ne jamais y mettre de clé
 `service_role` ni de mot de passe de base de données. L’application web
-installable reste publiée séparément en HTTPS sur GitHub Pages.
+installable reste publiée séparément en HTTPS sur GitHub Pages. Le service
+client est joignable à `daoudadiankha22@gmail.com`.
 
 ## Paiement Premium
 
-La démo propose uniquement un transfert manuel par Wave. Le choix d’une formule
-met à jour son prix et permet de copier le numéro affiché. Aucun paiement
-hébergé, contrôle de transaction ni activation automatique n’est configuré.
-Vérifier le numéro et le nom du destinataire avant tout transfert. Ne jamais
-demander ni partager de code secret. Pour encaisser réellement et activer les
-abonnements, intégrer un agrégateur de paiement côté serveur avant publication
-du service payant.
+Les tarifs affichés sont prévisionnels. Le simulateur a été retiré, mais aucun
+paiement ni accès Premium réel n’est actif ; les boutons d’achat restent
+désactivés. Ne transférez pas d’argent. Avant la commercialisation, intégrer un
+fournisseur de paiement, une validation d’abonnement côté serveur, des règles
+d’accès persistantes liées au compte et les secrets dans l’environnement serveur
+(jamais dans le code du navigateur). Les contrôles d’accès front-end seuls ne
+sécurisent pas des contenus payants. PayDunya n’est pas encore intégré : le
+code de cette application ne doit pas être présenté comme acceptant des
+paiements, même après une confirmation par case à cocher.
+
+Numéro marchand communiqué pour la future configuration PayDunya : `777267357`.
+Cette référence n’est pas utilisée par l’application statique et ne permet pas,
+à elle seule, d’effectuer ou de confirmer un paiement.
 
 ## Publication GitHub Pages
 

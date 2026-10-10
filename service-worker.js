@@ -1,4 +1,4 @@
-const CACHE_NAME = 'agriguide-v11';
+const CACHE_NAME = 'agriguide-v19';
 const PRECACHE_FILES = [
   './',
   './index.html',
