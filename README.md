@@ -47,9 +47,12 @@ et de dossiers d’atelier. Le prototype ne livre pas de dossier technique
 confidentiel dans le navigateur. Avant de vendre ces ressources, connecter un
 serveur qui contrôle l’abonnement et renvoie le contenu autorisé.
 
-Supabase peut fournir la base PostgreSQL et l’authentification. L’application
-web installable reste publiée séparément en HTTPS sur GitHub Pages : ne jamais
-intégrer une clé Supabase secrète dans les fichiers accessibles au navigateur.
+L’authentification réelle par e-mail utilise Supabase. Après la création du
+projet, renseigner son URL et sa clé publishable dans `supabase-config.js`, puis
+activer la confirmation d’e-mail dans les réglages Authentication de Supabase.
+La clé publishable est prévue pour le navigateur ; ne jamais y mettre de clé
+`service_role` ni de mot de passe de base de données. L’application web
+installable reste publiée séparément en HTTPS sur GitHub Pages.
 
 ## Paiement Premium
 
@@ -80,9 +83,10 @@ domaine configuré dans GitHub Pages.
 
 ## Limites du prototype
 
-L’inscription, la connexion, le paiement premium et le contrôle des formules ne
-sont pas encore reliés à un serveur : ce prototype ne doit pas être utilisé
-pour protéger des comptes, vendre les contenus verrouillés ni encaisser de
-l’argent. Les conseils agronomiques et de transformation restent indicatifs.
-Une publication sur GitHub Pages ne remplace ni un backend de paiement ni la
-validation des recommandations par des spécialistes locaux.
+Si `supabase-config.js` n’est pas renseigné, l’inscription et la connexion sont
+désactivées : aucun compte de démonstration n’est créé ni accepté. Le paiement
+premium et le contrôle des formules ne sont pas encore reliés à un serveur ; ne
+pas vendre les contenus verrouillés ni encaisser d’argent sur cette base. Les
+conseils agronomiques et de transformation restent indicatifs. Une publication
+sur GitHub Pages ne remplace ni un backend de paiement ni la validation des
+recommandations par des spécialistes locaux.

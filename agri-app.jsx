@@ -177,22 +177,22 @@ const professionalExclusives = [
   },
 ];
 
-const accountStats = [
-  { label: 'Pays', value: 'Sénégal' },
-  { label: 'Statut', value: 'Membre Essentiel' },
-  { label: 'Pluie prévue', value: '18%' },
-  { label: 'Saison', value: 'Saison des pluies' },
-];
-
 function App() {
   const [activeTab, setActiveTab] = useState('maintenant');
   const [selectedCountry, setSelectedCountry] = useState('Sénégal');
   const [hourIndex, setHourIndex] = useState(2);
   const [soilFilter, setSoilFilter] = useState('Tous');
   const [query, setQuery] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [authClient, setAuthClient] = useState(null);
+  const [authUser, setAuthUser] = useState(null);
+  const [authReady, setAuthReady] = useState(false);
+  const [authAvailable, setAuthAvailable] = useState(false);
+  const [authBusy, setAuthBusy] = useState(false);
+  const [authMessage, setAuthMessage] = useState('');
+  const [authServiceMessage, setAuthServiceMessage] = useState('');
   const [authMode, setAuthMode] = useState('signup');
   const [showSignupLanding, setShowSignupLanding] = useState(true);
+  const [installNotice, setInstallNotice] = useState('');
   const [selectedPlan, setSelectedPlan] = useState('Essentiel');
   const [premiumPhone, setPremiumPhone] = useState('707449987');
   const [paymentNotice, setPaymentNotice] = useState('');
@@ -211,11 +211,74 @@ function App() {
     });
   }, [query, soilFilter]);
 
-  const handleAuthSubmit = (event) => {
+  const handleAuthSubmit = async (event) => {
     event.preventDefault();
-    setShowSignupLanding(false);
-    setIsLoggedIn(true);
-    setActiveTab('compte');
+    if (!authClient) {
+      setAuthMessage('Les comptes ne sont pas encore configurés. Le propriétaire doit terminer le raccordement Supabase avant de pouvoir créer un compte.');
+      return;
+    }
+
+    const formData = new FormData(event.currentTarget);
+    const email = String(formData.get('email') || '').trim();
+    const password = String(formData.get('password') || '');
+    setAuthBusy(true);
+    setAuthMessage('');
+    try {
+      if (authMode === 'signup') {
+        const redirectUrl = new URL(window.location.href);
+        redirectUrl.search = '';
+        redirectUrl.hash = '';
+        const { data, error } = await authClient.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: ['http:', 'https:'].includes(redirectUrl.protocol) ? redirectUrl.toString() : undefined,
+            data: {
+              full_name: String(formData.get('fullName') || '').trim(),
+              country: String(formData.get('country') || selectedCountry),
+            },
+          },
+        });
+        if (error) throw error;
+        if (data.session) {
+          setAuthUser(data.user);
+          setSelectedCountry(String(data.user?.user_metadata?.country || selectedCountry));
+          setActiveTab('compte');
+        } else {
+          setAuthMessage('Compte créé. Consultez votre boîte e-mail pour confirmer votre adresse avant de vous connecter.');
+          setAuthMode('login');
+        }
+      } else {
+        const { data, error } = await authClient.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        setAuthUser(data.user);
+        setSelectedCountry(String(data.user?.user_metadata?.country || selectedCountry));
+        setActiveTab('compte');
+      }
+    } catch (error) {
+      console.error('Échec de l’authentification AgriGuide.', error);
+      setAuthMessage(error.message || 'Impossible de traiter la demande. Réessayez.');
+    } finally {
+      setAuthBusy(false);
+    }
+  };
+
+  const handleSignOut = async () => {
+    if (!authClient) return;
+    setAuthBusy(true);
+    setAuthMessage('');
+    try {
+      const { error } = await authClient.auth.signOut();
+      if (error) throw error;
+      setAuthUser(null);
+      setShowSignupLanding(true);
+      setAuthMode('login');
+    } catch (error) {
+      console.error('Échec de la déconnexion AgriGuide.', error);
+      setAuthMessage(error.message || 'Impossible de vous déconnecter. Réessayez.');
+    } finally {
+      setAuthBusy(false);
+    }
   };
 
   const handleSelectPlan = (planName) => {
@@ -234,30 +297,107 @@ function App() {
     }
   };
 
-  const handleInstallApp = () => {
-    const installPrompt = window.__agriguideInstallPrompt;
-    if (installPrompt) {
-      installPrompt.prompt();
-      installPrompt.userChoice.finally(() => {
-        window.__agriguideInstallPrompt = null;
-      });
+  const handleInstallApp = async () => {
+    const isInstalled = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    if (isInstalled) {
+      setInstallNotice('AgriGuide est déjà installée sur cet appareil.');
       return;
     }
-    const baseUrl = window.location.href.replace(/\/$/, '');
-    window.open(baseUrl, '_blank', 'noopener,noreferrer');
+
+    const installPrompt = window.__agriguideInstallPrompt;
+    if (installPrompt) {
+      window.__agriguideInstallPrompt = null;
+      try {
+        await installPrompt.prompt();
+        const { outcome } = await installPrompt.userChoice;
+        setInstallNotice(outcome === 'accepted'
+          ? 'Installation lancée. AgriGuide sera disponible depuis votre écran d’accueil.'
+          : 'Installation annulée. Vous pourrez réessayer depuis ce bouton.');
+      } catch (error) {
+        console.error('Impossible de lancer l’installation de l’app.', error);
+        setInstallNotice('L’installation automatique a échoué. Utilisez le menu de votre navigateur pour ajouter AgriGuide à l’écran d’accueil.');
+      }
+      return;
+    }
+
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+      || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (isIOS) {
+      setInstallNotice('Sur iPhone ou iPad : touchez Partager dans Safari, puis « Sur l’écran d’accueil ».');
+    } else if (/Android/i.test(navigator.userAgent)) {
+      setInstallNotice('Sur Android : ouvrez le menu ⋮ de Chrome, puis choisissez « Installer l’application » ou « Ajouter à l’écran d’accueil ».');
+    } else if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+      setInstallNotice('L’installation nécessite une connexion sécurisée. Ouvrez la version officielle d’AgriGuide en HTTPS puis réessayez.');
+    } else {
+      setInstallNotice('Dans Chrome ou Edge, ouvrez le menu près de la barre d’adresse et choisissez « Installer AgriGuide ».');
+    }
   };
 
   const selectedWeather = weatherByHour[hourIndex];
+
+  useEffect(() => {
+    let mounted = true;
+    let subscription;
+    const config = window.AGRIGUIDE_SUPABASE_CONFIG;
+
+    if (!config?.url || !config?.publishableKey) {
+      setAuthServiceMessage('Les comptes réels ne sont pas encore activés. Le propriétaire doit configurer l’URL et la clé publique du projet Supabase.');
+      setAuthReady(true);
+      return undefined;
+    }
+    if (!window.supabase?.createClient) {
+      setAuthServiceMessage('Le service de comptes est indisponible. Rechargez la page et réessayez.');
+      setAuthReady(true);
+      return undefined;
+    }
+
+    const initializeAuth = async () => {
+      try {
+        const client = window.supabase.createClient(config.url, config.publishableKey, {
+          auth: { persistSession: true, autoRefreshToken: true },
+        });
+        const { data, error } = await client.auth.getSession();
+        if (error) throw error;
+        if (!mounted) return;
+        setAuthClient(client);
+        setAuthAvailable(true);
+        setAuthUser(data.session?.user || null);
+        if (data.session?.user?.user_metadata?.country) {
+          setSelectedCountry(data.session.user.user_metadata.country);
+        }
+        subscription = client.auth.onAuthStateChange((_event, session) => {
+          if (mounted) setAuthUser(session?.user || null);
+        }).data.subscription;
+      } catch (error) {
+        console.error('Impossible d’initialiser les comptes AgriGuide.', error);
+        if (mounted) setAuthServiceMessage(`Connexion au service de comptes impossible : ${error.message}`);
+      } finally {
+        if (mounted) setAuthReady(true);
+      }
+    };
+
+    initializeAuth();
+    return () => {
+      mounted = false;
+      subscription?.unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     const onBeforeInstallPrompt = (event) => {
       event.preventDefault();
       window.__agriguideInstallPrompt = event;
     };
+    const onAppInstalled = () => {
+      window.__agriguideInstallPrompt = null;
+      setInstallNotice('AgriGuide est installée. Vous pouvez maintenant l’ouvrir depuis votre écran d’accueil.');
+    };
 
     window.addEventListener('beforeinstallprompt', onBeforeInstallPrompt);
+    window.addEventListener('appinstalled', onAppInstalled);
     return () => {
       window.removeEventListener('beforeinstallprompt', onBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', onAppInstalled);
     };
   }, []);
 
@@ -343,13 +483,15 @@ function App() {
             <span className="store-dot" />
             Météo nationale • {selectedCountry}
           </div>
-          <div className="profile-mini">
-            <div className="avatar">AD</div>
-            <div className="profile-copy">
-              Abdou Diop
-              <small>Gratuit • 3 jours</small>
+          {authUser && (
+            <div className="profile-mini">
+              <div className="avatar">{(authUser.user_metadata?.full_name || authUser.email || 'AG').slice(0, 2).toUpperCase()}</div>
+              <div className="profile-copy">
+                {authUser.user_metadata?.full_name || authUser.email}
+                <small>Compte connecté</small>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </aside>
 
@@ -376,6 +518,12 @@ function App() {
         </header>
 
         <div className="content-area">
+          {installNotice && (
+            <div className="install-notice" role="status">
+              <span>{installNotice}</span>
+              <button type="button" aria-label="Fermer le message d’installation" onClick={() => setInstallNotice('')}>Fermer</button>
+            </div>
+          )}
           {activeTab === 'maintenant' && (
             <>
               <section className="hero-panel">
@@ -854,7 +1002,7 @@ function App() {
           )}
 
           {activeTab === 'compte' && (
-            !isLoggedIn ? (
+            !authUser ? (
               showSignupLanding ? (
                 <section className="auth-wrapper">
                   <div className="panel auth-panel signup-landing-panel">
@@ -888,37 +1036,42 @@ function App() {
                   <div className="panel auth-panel">
                     <div className="panel-head">
                       <h3>{authMode === 'signup' ? 'Créer un compte' : 'Connexion'}</h3>
-                      <span className="tag">Sécurisé</span>
+                      <span className="tag">{authAvailable ? 'Compte Supabase' : 'Configuration en attente'}</span>
                     </div>
                     <div className="auth-tabs">
-                      <button type="button" className={authMode === 'signup' ? 'active' : ''} onClick={() => setAuthMode('signup')}>Inscription</button>
-                      <button type="button" className={authMode === 'login' ? 'active' : ''} onClick={() => setAuthMode('login')}>Connexion</button>
+                      <button type="button" className={authMode === 'signup' ? 'active' : ''} onClick={() => { setAuthMode('signup'); setAuthMessage(''); }}>Inscription</button>
+                      <button type="button" className={authMode === 'login' ? 'active' : ''} onClick={() => { setAuthMode('login'); setAuthMessage(''); }}>Connexion</button>
                     </div>
 
                     <form className="auth-form" onSubmit={handleAuthSubmit}>
                       {authMode === 'signup' && (
                         <label>
                           Nom complet
-                          <input type="text" defaultValue="Abdou Diop" required />
+                          <input type="text" name="fullName" autoComplete="name" required />
                         </label>
                       )}
                       <label>
-                        Téléphone ou e-mail
-                        <input type="text" defaultValue={authMode === 'signup' ? 'abdou@agriguide.sn' : 'abdou@agriguide.sn'} required />
+                        Adresse e-mail
+                        <input type="email" name="email" autoComplete="email" required />
                       </label>
                       <label>
                         Mot de passe
-                        <input type="password" defaultValue="pass1234" minLength="6" required />
+                        <input type="password" name="password" autoComplete={authMode === 'signup' ? 'new-password' : 'current-password'} minLength="8" required />
                       </label>
                       <label>
                         Pays où vous cultivez
-                        <select defaultValue={selectedCountry}>
+                        <select name="country" defaultValue={selectedCountry}>
                           {countries.map((country) => (
                             <option key={country} value={country}>{country}</option>
                           ))}
                         </select>
                       </label>
-                      <button type="submit" className="button button-primary full-width">{authMode === 'signup' ? 'Créer mon compte' : 'Se connecter'}</button>
+                      {!authReady && <p role="status">Connexion au service de comptes…</p>}
+                      {authServiceMessage && <p className="auth-message" role="status">{authServiceMessage}</p>}
+                      {authMessage && <p className="auth-message" role="status">{authMessage}</p>}
+                      <button type="submit" className="button button-primary full-width" disabled={!authReady || !authAvailable || authBusy}>
+                        {authBusy ? 'Veuillez patienter…' : authMode === 'signup' ? 'Créer mon compte' : 'Se connecter'}
+                      </button>
                     </form>
                   </div>
                 </section>
@@ -931,14 +1084,19 @@ function App() {
                     <span className="tag">Profil</span>
                   </div>
                   <div className="profile-block">
-                    <div className="avatar big-avatar">AD</div>
+                    <div className="avatar big-avatar">{(authUser.user_metadata?.full_name || authUser.email || 'AG').slice(0, 2).toUpperCase()}</div>
                     <div>
-                      <h4>Abdou Diop</h4>
-                      <p>abdou@agriguide.sn • pays: Sénégal</p>
+                      <h4>{authUser.user_metadata?.full_name || authUser.email}</h4>
+                      <p>{authUser.email} • pays : {authUser.user_metadata?.country || selectedCountry}</p>
                     </div>
                   </div>
                   <div className="stats-grid">
-                    {accountStats.map((stat) => (
+                    {[
+                      { label: 'Pays', value: authUser.user_metadata?.country || selectedCountry },
+                      { label: 'Statut', value: 'Compte actif' },
+                      { label: 'Pluie prévue', value: '18%' },
+                      { label: 'Saison', value: 'Saison des pluies' },
+                    ].map((stat) => (
                       <div key={stat.label} className="stat-box">
                         <span>{stat.label}</span>
                         <strong>{stat.value}</strong>
@@ -957,7 +1115,10 @@ function App() {
                     <li>Vérification SMS / e-mail</li>
                     <li>Suppression du compte</li>
                   </ul>
-                  <button type="button" className="button button-secondary" onClick={() => setIsLoggedIn(false)}>Se déconnecter</button>
+                  {authMessage && <p className="auth-message" role="status">{authMessage}</p>}
+                  <button type="button" className="button button-secondary" onClick={handleSignOut} disabled={authBusy}>
+                    {authBusy ? 'Veuillez patienter…' : 'Se déconnecter'}
+                  </button>
                 </div>
               </section>
             )

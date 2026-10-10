@@ -1,10 +1,11 @@
-const CACHE_NAME = 'agriguide-v6';
+const CACHE_NAME = 'agriguide-v8';
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll([
     './',
     './index.html',
     './agri-styles.css',
     './agri-app.jsx',
+    './supabase-config.js',
     './manifest.json',
     './icon.svg',
     './icon-192.png',

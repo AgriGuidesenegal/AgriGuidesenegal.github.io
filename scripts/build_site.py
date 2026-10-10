@@ -14,6 +14,7 @@ def main():
         "index.html",
         "agri-app.jsx",
         "agri-styles.css",
+        "supabase-config.js",
         "manifest.json",
         "service-worker.js",
         "icon.svg",
