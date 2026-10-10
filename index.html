@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f5f0e6" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="AgriGuide Sénégal" />
+    <meta name="application-name" content="AgriGuide Sénégal" />
+    <meta name="description" content="AgriGuide Sénégal : conseils agricoles, météo locale, cultures et accompagnement pour les agriculteurs en Afrique de l’Ouest." />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icon-192.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="agri-styles.css" />
+    <title>AgriGuide Sénégal • Cultivez mieux</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script>
+      fetch('./agri-app.jsx')
+        .then((response) => response.text())
+        .then((source) => {
+          const { code } = Babel.transform(source, {
+            presets: [[Babel.availablePresets.react, { runtime: 'classic' }]],
+          });
+          const appScript = document.createElement('script');
+          appScript.textContent = code;
+          document.body.appendChild(appScript);
+        })
+        .catch((error) => {
+          document.getElementById('root').textContent = `Impossible de charger AgriGuide : ${error.message}`;
+        });
+    </script>
+    <script>
+      window.addEventListener('error', (event) => {
+        if (event.target instanceof HTMLImageElement) {
+          event.target.dataset.imageUnavailable = 'true';
+          event.target.alt = event.target.alt ? `${event.target.alt} (image indisponible)` : 'Image indisponible';
+        }
+      }, true);
+    </script>
+    <script>
+      if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+        window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js'));
+      }
+    </script>
+  </body>
+</html>

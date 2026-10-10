@@ -1,0 +1,18 @@
+{
+  "id": "/",
+  "name": "AgriGuide Sénégal",
+  "short_name": "AgriGuide",
+  "description": "Conseils agricoles, météo locale, cultures et assistance pour les agriculteurs en Afrique de l’Ouest.",
+  "lang": "fr-FR",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "background_color": "#f5f0e6",
+  "theme_color": "#f5f0e6",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
