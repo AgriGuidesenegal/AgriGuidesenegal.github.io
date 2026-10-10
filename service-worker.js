@@ -1,4 +1,4 @@
-const CACHE_NAME = 'agriguide-v5';
+const CACHE_NAME = 'agriguide-v6';
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll([
     './',
