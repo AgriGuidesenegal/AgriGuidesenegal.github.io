@@ -9,6 +9,16 @@
     <meta name="apple-mobile-web-app-title" content="AgriGuide" />
     <meta name="application-name" content="AgriGuide" />
     <meta name="description" content="AgriGuide : conseils agricoles, météo locale, cultures et accompagnement pour les agriculteurs." />
+    <script>
+      window.__agriguideInstallPrompt = null;
+      window.addEventListener('beforeinstallprompt', (event) => {
+        event.preventDefault();
+        window.__agriguideInstallPrompt = event;
+      });
+      window.addEventListener('appinstalled', () => {
+        window.__agriguideInstallPrompt = null;
+      });
+    </script>
     <link rel="manifest" href="manifest.json" />
     <link rel="icon" href="icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="icon-192.png" />

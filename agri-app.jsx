@@ -384,19 +384,13 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const onBeforeInstallPrompt = (event) => {
-      event.preventDefault();
-      window.__agriguideInstallPrompt = event;
-    };
     const onAppInstalled = () => {
       window.__agriguideInstallPrompt = null;
       setInstallNotice('AgriGuide est installée. Vous pouvez maintenant l’ouvrir depuis votre écran d’accueil.');
     };
 
-    window.addEventListener('beforeinstallprompt', onBeforeInstallPrompt);
     window.addEventListener('appinstalled', onAppInstalled);
     return () => {
-      window.removeEventListener('beforeinstallprompt', onBeforeInstallPrompt);
       window.removeEventListener('appinstalled', onAppInstalled);
     };
   }, []);

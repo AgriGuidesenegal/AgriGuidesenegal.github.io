@@ -1,18 +1,30 @@
-const CACHE_NAME = 'agriguide-v10';
+const CACHE_NAME = 'agriguide-v11';
+const PRECACHE_FILES = [
+  './',
+  './index.html',
+  './agri-styles.css',
+  './agri-app.jsx',
+  './supabase-config.js',
+  './manifest.json',
+  './icon.svg',
+  './icon-192.png',
+  './icon-512.png',
+  './news.json',
+  './crop-photo-credits.json',
+];
+
 self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll([
-    './',
-    './index.html',
-    './agri-styles.css',
-    './agri-app.jsx',
-    './supabase-config.js',
-    './manifest.json',
-    './icon.svg',
-    './icon-192.png',
-    './icon-512.png',
-    './news.json',
-    './crop-photo-credits.json',
-  ])));
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    await Promise.all(PRECACHE_FILES.map(async (file) => {
+      const assetUrl = new URL(file, self.registration.scope);
+      const freshUrl = new URL(assetUrl);
+      freshUrl.searchParams.set('precache', CACHE_NAME);
+      const response = await fetch(freshUrl, { cache: 'reload' });
+      if (!response.ok) throw new Error(`Unable to cache ${file}: ${response.status}`);
+      await cache.put(assetUrl, response);
+    }));
+  })());
   self.skipWaiting();
 });
 self.addEventListener('activate', (event) => {
