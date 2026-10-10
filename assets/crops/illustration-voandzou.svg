@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="title">
+  <title id="title">Illustration botanique du voandzou</title>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#f2ead0"/><stop offset="1" stop-color="#deeedc"/></linearGradient></defs>
+  <rect width="640" height="420" rx="32" fill="url(#bg)"/>
+  <path d="M319 158v163m0-111-79-54m79 98 91-70m-91 33-14-83" fill="none" stroke="#557c48" stroke-linecap="round" stroke-width="10"/>
+  <path d="M239 103c29-11 54-2 80 27-32 13-58 4-80-27m170 71c-32-7-61 8-90 41 34 10 64-3 90-41m-203-35c11-33 36-50 76-51-9 38-35 55-76 51m118-49c-26-20-37-45-31-78 31 19 42 44 31 78" fill="#7fac63" stroke="#557c48" stroke-width="5"/>
+  <path d="M205 324c37-24 82-24 118 0m-118 0h239" fill="none" stroke="#997148" stroke-linecap="round" stroke-width="10"/>
+  <ellipse cx="271" cy="317" rx="19" ry="11" fill="#bb8950"/><ellipse cx="354" cy="317" rx="19" ry="11" fill="#bb8950"/><ellipse cx="409" cy="317" rx="19" ry="11" fill="#bb8950"/>
+  <text x="320" y="385" text-anchor="middle" fill="#314b37" font-family="sans-serif" font-size="28" font-weight="700">VOANDZOU · ILLUSTRATION</text>
+</svg>

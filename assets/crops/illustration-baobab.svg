@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="title">
+  <title id="title">Illustration botanique du baobab</title>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#f9e6c9"/><stop offset="1" stop-color="#e5efdc"/></linearGradient></defs>
+  <rect width="640" height="420" rx="32" fill="url(#bg)"/>
+  <path d="M292 330c18-67 12-124 1-183-33 6-56 0-83-23 42 1 65-15 88-40 22 25 49 39 92 37-24 27-48 34-83 27-13 61-15 121 5 182z" fill="#9b7045"/>
+  <path d="M155 137c-18-23-5-50 19-57 1-31 36-48 60-32 12-39 71-43 91-5 27-26 76-14 84 21 40-7 64 25 48 56 33 22 20 63-20 67-23 31-72 25-87-2-33 22-77 13-91-14-38 19-79-3-75-34-39-2-48-45-29-68z" fill="#54834b" stroke="#416c40" stroke-width="6"/>
+  <circle cx="234" cy="136" r="12" fill="#76a65f"/><circle cx="391" cy="144" r="11" fill="#76a65f"/><circle cx="322" cy="93" r="10" fill="#76a65f"/>
+  <text x="320" y="385" text-anchor="middle" fill="#314b37" font-family="sans-serif" font-size="30" font-weight="700">BAOBAB · ILLUSTRATION</text>
+</svg>

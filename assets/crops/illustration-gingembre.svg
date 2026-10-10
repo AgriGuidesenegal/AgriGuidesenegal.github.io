@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="title">
+  <title id="title">Illustration botanique du gingembre</title>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#f7ebd4"/><stop offset="1" stop-color="#e1efdc"/></linearGradient></defs>
+  <rect width="640" height="420" rx="32" fill="url(#bg)"/>
+  <path d="M317 267V111m0 109-80-72m80 45 78-84m-78 145 83-66" fill="none" stroke="#557c48" stroke-linecap="round" stroke-width="11"/>
+  <path d="M237 148c27-16 54-11 80 13-29 20-57 16-80-13m158-84c-30-1-55 15-78 48 33 6 60-10 78-48m-78 73c-4-35 10-61 43-82 8 37-7 65-43 82" fill="#79a961" stroke="#557c48" stroke-width="5"/>
+  <path d="M248 311c-10-25 9-43 34-36 4-25 35-29 46-7 16-23 47-11 43 13 24-6 36 18 20 34 2 22-25 33-42 21-18 21-47 12-49-9-25 13-48 4-52-16z" fill="#d69c54" stroke="#a9783b" stroke-width="6"/>
+  <path d="M274 299c13 8 25 9 39 4m9-36c-1 14 4 23 15 30m-63 3 10 21m67-29 17-13" fill="none" stroke="#f1c47e" stroke-width="6" stroke-linecap="round"/>
+  <text x="320" y="385" text-anchor="middle" fill="#314b37" font-family="sans-serif" font-size="30" font-weight="700">GINGEMBRE · ILLUSTRATION</text>
+</svg>

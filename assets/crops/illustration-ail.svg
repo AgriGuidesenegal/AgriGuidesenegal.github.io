@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="title">
+  <title id="title">Illustration botanique de l’ail</title>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#f3ead6"/><stop offset="1" stop-color="#deeedc"/></linearGradient></defs>
+  <rect width="640" height="420" rx="32" fill="url(#bg)"/>
+  <path d="M320 229c-2-59-10-107-27-150m29 150c13-57 34-99 65-133m-68 134c-23-45-49-76-82-99" fill="none" stroke="#66894d" stroke-linecap="round" stroke-width="12"/>
+  <path d="M265 79c-8-31-3-57 18-79 18 31 15 57-18 79m119 8c3-31 17-55 47-68 2 36-14 58-47 68m-180 45c0-32 13-56 41-75 6 35-8 59-41 75" fill="#8aa96b" stroke="#66894d" stroke-width="5"/>
+  <path d="M320 224c-16 16-43 33-43 66 0 40 20 65 43 81 24-17 44-42 44-81 0-33-27-50-44-66z" fill="#f4efdf" stroke="#c5b99c" stroke-width="6"/>
+  <path d="M320 240v116m-26-88 13 85m40-85-14 85" stroke="#d6cbb1" stroke-width="5"/>
+  <text x="320" y="399" text-anchor="middle" fill="#314b37" font-family="sans-serif" font-size="30" font-weight="700">AIL · ILLUSTRATION</text>
+</svg>

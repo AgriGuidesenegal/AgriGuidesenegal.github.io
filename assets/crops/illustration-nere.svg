@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="title">
+  <title id="title">Illustration botanique du néré</title>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#f8e7c5"/><stop offset="1" stop-color="#e1efdc"/></linearGradient></defs>
+  <rect width="640" height="420" rx="32" fill="url(#bg)"/>
+  <path d="M307 336c16-76 15-132 6-198m-1 104-93-75m97 106 103-89m-102 22-1-76" fill="none" stroke="#82613f" stroke-linecap="round" stroke-width="15"/>
+  <g fill="#5d914e" stroke="#477b4d" stroke-width="5"><circle cx="215" cy="142" r="49"/><circle cx="265" cy="106" r="48"/><circle cx="324" cy="124" r="52"/><circle cx="382" cy="107" r="49"/><circle cx="423" cy="153" r="45"/></g>
+  <g fill="#e2af45"><ellipse cx="251" cy="157" rx="8" ry="15"/><ellipse cx="362" cy="149" rx="8" ry="15"/><ellipse cx="326" cy="87" rx="8" ry="15"/></g>
+  <text x="320" y="385" text-anchor="middle" fill="#314b37" font-family="sans-serif" font-size="30" font-weight="700">NÉRÉ · ILLUSTRATION</text>
+</svg>
