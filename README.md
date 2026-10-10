@@ -35,6 +35,32 @@ Les images de cultures sont conservées dans `assets/crops/`. Le fichier
 d’auteur et de licence Creative Commons. Un lien de crédit est affiché sous la
 photo. Ne pas dissocier ces attributions des images lors de la redistribution.
 
+## Transformation et outils pour agronomes
+
+L’onglet **Transformation** présente des pistes générales de valorisation pour
+la mangue, le mil, le fonio, l’arachide, le moringa et la tomate. Les procédés
+de conservation, conditions d’hygiène et durées ne sont pas certifiés : ils
+doivent être validés pour le produit, l’équipement et le marché visés.
+
+Les formules Premium affichent des aperçus de carnets de lots, d’outils de coût
+et de dossiers d’atelier. Le prototype ne livre pas de dossier technique
+confidentiel dans le navigateur. Avant de vendre ces ressources, connecter un
+serveur qui contrôle l’abonnement et renvoie le contenu autorisé.
+
+Supabase peut fournir la base PostgreSQL et l’authentification. L’application
+web installable reste publiée séparément en HTTPS sur GitHub Pages : ne jamais
+intégrer une clé Supabase secrète dans les fichiers accessibles au navigateur.
+
+## Paiement Premium
+
+La démo propose uniquement un transfert manuel par Wave. Le choix d’une formule
+met à jour son prix et permet de copier le numéro affiché. Aucun paiement
+hébergé, contrôle de transaction ni activation automatique n’est configuré.
+Vérifier le numéro et le nom du destinataire avant tout transfert. Ne jamais
+demander ni partager de code secret. Pour encaisser réellement et activer les
+abonnements, intégrer un agrégateur de paiement côté serveur avant publication
+du service payant.
+
 ## Publication GitHub Pages
 
 Le workflow `.github/workflows/deploy-pages.yml` prépare `dist/` et le publie
@@ -54,9 +80,9 @@ domaine configuré dans GitHub Pages.
 
 ## Limites du prototype
 
-L’inscription, la connexion et le paiement premium ne sont pas reliés à un
-serveur : ce prototype ne doit pas être utilisé pour protéger des comptes ni
-encaisser de l’argent. Les conseils agronomiques restent indicatifs. Une
-publication sur GitHub Pages ne remplace pas un service d’authentification, un
-backend de paiement ni une validation des recommandations par des spécialistes
-locaux.
+L’inscription, la connexion, le paiement premium et le contrôle des formules ne
+sont pas encore reliés à un serveur : ce prototype ne doit pas être utilisé
+pour protéger des comptes, vendre les contenus verrouillés ni encaisser de
+l’argent. Les conseils agronomiques et de transformation restent indicatifs.
+Une publication sur GitHub Pages ne remplace ni un backend de paiement ni la
+validation des recommandations par des spécialistes locaux.

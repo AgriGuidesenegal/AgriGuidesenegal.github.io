@@ -5,6 +5,7 @@ const tabs = [
   { id: 'assistant', label: 'Assistant IA', icon: '🤖' },
   { id: 'sols', label: 'Sols', icon: '🌱' },
   { id: 'cultures', label: 'Cultures', icon: '🌾' },
+  { id: 'transformation', label: 'Transformation', icon: '🥭' },
   { id: 'outils', label: 'Outils pro', icon: '🧰' },
   { id: 'meteo', label: 'Météo', icon: '⛅' },
   { id: 'actualites', label: 'Actualités', icon: '📰' },
@@ -99,9 +100,81 @@ const news = [
 ];
 
 const premiumPlans = [
-  { name: 'Essentiel', price: '1 000 FCFA', feat: '20 réponses IA • rotation 3 ans • calendrier d’arrosage', accent: 'primary', payment: 'Orange Money / Wave' },
-  { name: 'Pro', price: '5 000 FCFA', feat: '100 réponses IA détaillées • fiches de semis • engrais maison', accent: 'gold', payment: 'Orange Money / Wave' },
-  { name: 'Expert', price: '15 000 FCFA', feat: '400 réponses IA • plan 1 ha • vente, stockage, transformation', accent: 'deep', payment: 'Orange Money / Wave' },
+  { name: 'Essentiel', price: '1 000 FCFA', feat: '20 réponses IA • rotation 3 ans • calendrier d’arrosage', professionalFeature: 'Carnet de suivi des lots et fiche de récolte.', accent: 'primary', payment: 'Wave' },
+  { name: 'Pro', price: '5 000 FCFA', feat: '100 réponses IA détaillées • fiches de semis • engrais maison', professionalFeature: 'Trame qualité et calcul des coûts à partir de vos données.', accent: 'gold', payment: 'Wave' },
+  { name: 'Expert', price: '15 000 FCFA', feat: '400 réponses IA • plan 1 ha • vente, stockage, transformation', professionalFeature: 'Dossier prévisionnel d’atelier et de débouchés.', accent: 'deep', payment: 'Wave' },
+];
+
+const transformationGuides = [
+  {
+    name: 'Mangue séchée',
+    crop: 'Mangue',
+    icon: '🥭',
+    product: 'Tranches de mangue séchée',
+    steps: ['Trier les fruits et écarter ceux qui sont abîmés.', 'Laver à l’eau potable, éplucher et couper régulièrement.', 'Sécher avec un procédé adapté et validé pour les aliments.', 'Laisser refroidir dans un espace propre avant de conditionner.'],
+    watch: 'Protéger le produit de l’humidité et des manipulations après séchage.',
+  },
+  {
+    name: 'Farine de mil',
+    crop: 'Mil',
+    icon: '🌾',
+    product: 'Farine pour bouillies et préparations',
+    steps: ['Trier les grains et retirer les corps étrangers.', 'Vérifier que le grain est apte au stockage et à la mouture.', 'Moudre avec du matériel propre et adapté aux céréales.', 'Tamiser si nécessaire, puis conditionner dans un emballage propre et sec.'],
+    watch: 'Garder le lot identifié et à l’abri de l’humidité.',
+  },
+  {
+    name: 'Fonio précuit',
+    crop: 'Fonio',
+    icon: '🍚',
+    product: 'Fonio prêt à cuire',
+    steps: ['Nettoyer et trier le fonio selon la qualité du lot.', 'Décortiquer et laver avec de l’eau potable.', 'Appliquer une cuisson à la vapeur selon un procédé validé.', 'Sécher et conditionner dans des conditions maîtrisées.'],
+    watch: 'Protéger le fonio après cuisson contre les contaminations et l’humidité.',
+  },
+  {
+    name: 'Pâte d’arachide',
+    crop: 'Arachide',
+    icon: '🥜',
+    product: 'Pâte à base d’arachide',
+    steps: ['Sélectionner un lot propre et écarter les graines altérées.', 'Nettoyer et préparer les graines selon une méthode maîtrisée.', 'Torréfier puis broyer avec des équipements propres et adaptés.', 'Conditionner en séparant les lots et en indiquant leur date de fabrication.'],
+    watch: 'L’arachide peut présenter des risques de mycotoxines et d’allergie. Le tri visuel ne garantit pas l’absence de contaminants.',
+  },
+  {
+    name: 'Poudre de moringa',
+    crop: 'Moringa',
+    icon: '🌿',
+    product: 'Feuilles de moringa en poudre',
+    steps: ['Écarter les feuilles abîmées et retirer les impuretés.', 'Laver avec de l’eau potable et égoutter dans un espace propre.', 'Sécher à l’abri de la poussière avec un procédé alimentaire adapté.', 'Broyer et conditionner dans un emballage propre, sec et fermé.'],
+    watch: 'Prévenir l’humidité et la recontamination pendant le séchage et le conditionnement.',
+  },
+  {
+    name: 'Pulpe de tomate',
+    crop: 'Tomate',
+    icon: '🍅',
+    product: 'Base de tomate fraîche',
+    steps: ['Trier les tomates fraîches et éliminer les fruits altérés.', 'Laver à l’eau potable et retirer les parties abîmées.', 'Broyer et préparer en petites séries dans du matériel propre.', 'Pour toute conservation, appliquer un procédé validé adapté au produit.'],
+    watch: 'Cette préparation fraîche n’est pas une conserve. Ne pas la garder à température ambiante sans procédé validé.',
+  },
+];
+
+const professionalExclusives = [
+  {
+    plan: 'Essentiel',
+    format: 'Fiche terrain',
+    name: 'Carnet de lot et de récolte',
+    summary: 'Suivez l’origine de la récolte, les opérations réalisées, les dates, les pertes observées et le stockage.',
+  },
+  {
+    plan: 'Pro',
+    format: 'Outil de travail',
+    name: 'Qualité et coût de transformation',
+    summary: 'Trame de contrôle par lot et calcul des coûts à compléter avec vos prix, mesures et rendements observés.',
+  },
+  {
+    plan: 'Expert',
+    format: 'Dossier technique',
+    name: 'Atelier, traçabilité et débouchés',
+    summary: 'Préparez une étude d’atelier, les besoins en équipements et un plan de commercialisation à vérifier localement.',
+  },
 ];
 
 const accountStats = [
@@ -122,6 +195,7 @@ function App() {
   const [showSignupLanding, setShowSignupLanding] = useState(true);
   const [selectedPlan, setSelectedPlan] = useState('Essentiel');
   const [premiumPhone, setPremiumPhone] = useState('707449987');
+  const [paymentNotice, setPaymentNotice] = useState('');
   const [newsData, setNewsData] = useState(null);
   const [newsLoading, setNewsLoading] = useState(false);
   const [newsError, setNewsError] = useState('');
@@ -142,6 +216,22 @@ function App() {
     setShowSignupLanding(false);
     setIsLoggedIn(true);
     setActiveTab('compte');
+  };
+
+  const handleSelectPlan = (planName) => {
+    setSelectedPlan(planName);
+    setPaymentNotice(`Formule ${planName} sélectionnée. Suivez les instructions Wave ci-dessous.`);
+    document.getElementById('premium-payment')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  const handleCopyPaymentNumber = async () => {
+    try {
+      await navigator.clipboard.writeText(premiumPhone);
+      setPaymentNotice(`Numéro Wave ${premiumPhone} copié. Vérifiez le destinataire et le montant avant de confirmer votre transfert.`);
+    } catch (error) {
+      console.error('Impossible de copier le numéro Wave.', error);
+      setPaymentNotice(`La copie est indisponible. Saisissez manuellement le numéro Wave ${premiumPhone}.`);
+    }
   };
 
   const handleInstallApp = () => {
@@ -623,31 +713,142 @@ function App() {
             </section>
           )}
 
+          {activeTab === 'transformation' && (
+            <section className="section-block transformation-block">
+              <div className="section-header">
+                <div>
+                  <h2>Transformer les récoltes locales</h2>
+                  <p>Des pistes de valorisation pour les produits du Sénégal et de la région.</p>
+                </div>
+                <span className="tag">Conseils indicatifs</span>
+              </div>
+
+              <div className="transformation-safety" role="note">
+                <strong>Avant de produire ou de vendre</strong>
+                <p>Les étapes ci-dessous sont des repères généraux, pas des procédés de conservation validés. L’hygiène, les conditions de transformation et la durée de conservation doivent être vérifiées avec un technicien agroalimentaire et les services compétents.</p>
+              </div>
+
+              <div className="card-grid three-grid transformation-grid">
+                {transformationGuides.map((guide) => (
+                  <article className="transformation-card" key={guide.name}>
+                    <div className="transformation-card-top">
+                      <span className="transformation-icon" aria-hidden="true">{guide.icon}</span>
+                      <span className="tag">{guide.crop}</span>
+                    </div>
+                    <h3>{guide.name}</h3>
+                    <p><strong>Produit :</strong> {guide.product}</p>
+                    <ol className="transformation-steps">
+                      {guide.steps.map((step) => <li key={step}>{step}</li>)}
+                    </ol>
+                    <p className="transformation-watch"><strong>À surveiller :</strong> {guide.watch}</p>
+                  </article>
+                ))}
+              </div>
+
+              <section className="professional-exclusive-block">
+                <div className="section-header">
+                  <div>
+                    <h3>Outils exclusifs pour agronomes</h3>
+                    <p>Des supports professionnels à compléter avec les données de chaque exploitation.</p>
+                  </div>
+                  <span className="tag">Réservé aux membres</span>
+                </div>
+                <div className="card-grid three-grid">
+                  {professionalExclusives.map((exclusive) => (
+                    <article className="professional-card" key={exclusive.plan}>
+                      <div className="professional-card-top">
+                        <span className="tag">{exclusive.plan}</span>
+                        <span className="professional-format">{exclusive.format}</span>
+                      </div>
+                      <h3>{exclusive.name}</h3>
+                      <p>{exclusive.summary}</p>
+                      <div className="exclusive-preview" aria-hidden="true">
+                        <span className="exclusive-preview-line" />
+                        <span className="exclusive-preview-line" />
+                        <span className="exclusive-preview-line short" />
+                      </div>
+                      <div className="exclusive-locked">
+                        <span aria-hidden="true">🔒</span>
+                        <span>Guide complet réservé aux membres {exclusive.plan}</span>
+                      </div>
+                      <button
+                        type="button"
+                        className="button button-secondary"
+                        onClick={() => { setSelectedPlan(exclusive.plan); setActiveTab('premium'); }}
+                      >
+                        Voir la formule {exclusive.plan}
+                      </button>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            </section>
+          )}
+
           {activeTab === 'premium' && (
             <section className="section-block premium-block">
               <div className="section-header">
                 <h2>Premium</h2>
               </div>
+              <section className="professional-exclusive-block premium-exclusive-block">
+                <div className="section-header">
+                  <div>
+                    <h3>Exclusivités pour agronomes</h3>
+                    <p>Des fiches de terrain aux dossiers de projet, selon votre formule.</p>
+                  </div>
+                  <button type="button" className="link-button" onClick={() => setActiveTab('transformation')}>Découvrir la transformation</button>
+                </div>
+                <div className="card-grid three-grid">
+                  {professionalExclusives.map((exclusive) => (
+                    <article className="professional-card" key={exclusive.plan}>
+                      <div className="professional-card-top">
+                        <span className="tag">{exclusive.plan}</span>
+                        <span className="professional-format">{exclusive.format}</span>
+                      </div>
+                      <h3>{exclusive.name}</h3>
+                      <p>{exclusive.summary}</p>
+                      <div className="exclusive-preview" aria-hidden="true">
+                        <span className="exclusive-preview-line" />
+                        <span className="exclusive-preview-line" />
+                        <span className="exclusive-preview-line short" />
+                      </div>
+                      <span className="exclusive-locked">
+                        <span aria-hidden="true">🔒</span>
+                        Contenu réservé aux membres {exclusive.plan}
+                      </span>
+                      <button type="button" className="link-button" onClick={() => handleSelectPlan(exclusive.plan)}>
+                        Débloquer avec {exclusive.plan}
+                      </button>
+                    </article>
+                  ))}
+                </div>
+                <p className="premium-prototype-note">Aperçus de la démo : l’abonnement et le contrôle d’accès doivent être activés côté serveur avant toute vente de ces contenus.</p>
+              </section>
               <div className="card-grid three-grid plans-grid">
                 {premiumPlans.map((plan) => (
                   <article key={plan.name} className={`plan-card ${plan.accent} ${selectedPlan === plan.name ? 'selected-plan' : ''}`}>
                     <span className="plan-name">{plan.name}</span>
                     <div className="plan-price">{plan.price}</div>
                     <p>{plan.feat}</p>
+                    <p className="plan-pro-exclusive"><strong>Pour les agronomes :</strong> {plan.professionalFeature}</p>
                     <div className="plan-payment">Paiement : {plan.payment}</div>
-                    <button type="button" className="button button-primary" onClick={() => setSelectedPlan(plan.name)}>Choisir</button>
+                    <button type="button" className="button button-primary" onClick={() => handleSelectPlan(plan.name)}>Choisir cette formule</button>
                   </article>
                 ))}
               </div>
 
-              <div className="payment-box">
-                <div className="payment-title">Paiement premium</div>
-                <div className="payment-number">Numéro de paiement : <strong>{premiumPhone}</strong></div>
-                <div className="payment-legend">Montant du plan choisi : <strong>{premiumPlans.find((plan) => plan.name === selectedPlan)?.price || '1 000 FCFA'}</strong></div>
-                <div className="payment-actions">
-                  <button type="button" className="button button-primary">Confirmer le paiement</button>
-                  <button type="button" className="button button-secondary">Envoyer la preuve</button>
+              <div className="payment-box" id="premium-payment">
+                <div className="payment-title">Paiement manuel par Wave</div>
+                <div className="payment-legend">
+                  Formule choisie : <strong>{selectedPlan}</strong> · Montant : <strong>{premiumPlans.find((plan) => plan.name === selectedPlan)?.price || '1 000 FCFA'}</strong>
                 </div>
+                <p className="payment-instructions">Ouvrez Wave, saisissez le numéro ci-dessous, puis vérifiez le destinataire et le montant avant de confirmer le transfert. Ne partagez jamais votre code secret.</p>
+                <div className="payment-number">
+                  Numéro Wave : <strong>{premiumPhone}</strong>
+                  <button type="button" className="button button-secondary" onClick={handleCopyPaymentNumber}>Copier le numéro</button>
+                </div>
+                {paymentNotice && <p className="payment-notice" role="status">{paymentNotice}</p>}
+                <p className="payment-disclaimer">Démo : Wave n’est pas connecté à l’application. Le transfert n’est ni vérifié ni confirmé automatiquement et ne débloque pas Premium. Attends la vérification du paiement par le propriétaire de l’application.</p>
               </div>
             </section>
           )}
