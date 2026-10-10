@@ -1,4 +1,4 @@
-# AgriGuide Sénégal
+# AgriGuide
 
 Prototype web installable pour découvrir des cultures, consulter des conseils
 agricoles et suivre les actualités du secteur au Sénégal.
