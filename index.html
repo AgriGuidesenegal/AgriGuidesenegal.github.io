@@ -60,7 +60,22 @@
     </script>
     <script>
       if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
-        window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js'));
+        window.addEventListener('load', () => {
+          let hasController = Boolean(navigator.serviceWorker.controller);
+          navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (!hasController) {
+              hasController = true;
+              return;
+            }
+            if (window.__agriguideRefreshing) return;
+            window.__agriguideRefreshing = true;
+            window.location.reload();
+          });
+
+          navigator.serviceWorker.register('./service-worker.js', { updateViaCache: 'none' })
+            .then((registration) => registration.update())
+            .catch((error) => console.error('Impossible de vérifier les mises à jour AgriGuide.', error));
+        });
       }
     </script>
   </body>

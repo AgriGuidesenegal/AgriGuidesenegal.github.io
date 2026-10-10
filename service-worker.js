@@ -1,4 +1,4 @@
-const CACHE_NAME = 'agriguide-v19';
+const CACHE_NAME = 'agriguide-v20';
 const PRECACHE_FILES = [
   './',
   './index.html',
@@ -33,20 +33,11 @@ self.addEventListener('activate', (event) => {
 });
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET' || new URL(event.request.url).origin !== self.location.origin) return;
-  if (new URL(event.request.url).pathname.endsWith('/news.json')) {
-    event.respondWith(caches.open(CACHE_NAME).then((cache) => fetch(event.request)
-      .then((response) => {
-        if (!response.ok) return response;
-        return cache.put(event.request, response.clone()).then(() => response);
-      })
-      .catch((error) => cache.match(event.request).then((cached) => {
-        if (cached) return cached;
-        throw error;
-      }))));
-    return;
-  }
-  event.respondWith(caches.match(event.request).then((cached) => cached || fetch(event.request).then((response) => {
-    const copy = response.clone();
-    return caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy).then(() => response));
+  event.respondWith(fetch(event.request).then((response) => {
+    if (!response.ok) return response;
+    return caches.open(CACHE_NAME).then((cache) => cache.put(event.request, response.clone()).then(() => response));
+  }).catch((error) => caches.open(CACHE_NAME).then((cache) => cache.match(event.request)).then((cached) => {
+    if (cached) return cached;
+    throw error;
   })));
 });

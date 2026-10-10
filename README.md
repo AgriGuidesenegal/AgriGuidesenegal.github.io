@@ -115,6 +115,10 @@ la prend en charge. Sur iPhone, utiliser **Partager → Sur l’écran d’accue
 Une URL publique courte personnalisée nécessite un nom de dépôt adapté ou un
 domaine configuré dans GitHub Pages.
 
+Les mises à jour du site sont vérifiées à l’ouverture. Si une nouvelle version
+du service worker prend le contrôle, l’application se recharge pour charger les
+nouveaux fichiers au lieu de garder une ancienne interface en mémoire.
+
 ## Limites du prototype
 
 Si `supabase-config.js` n’est pas renseigné, l’inscription et la connexion sont
